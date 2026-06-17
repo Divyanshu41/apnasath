@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CommunityConnect</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Dashboard Navigation -->
+    <nav class="dashboard-nav">
+        <div class="nav-brand">
+            <i class="fas fa-home"></i>
+            <span>CommunityConnect</span>
+        </div>
+        <div class="nav-user">
+            <span id="userName">Loading...</span>
+            <button class="btn btn-sm btn-outline" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-menu">
+                <a href="#" class="menu-item active" onclick="showSection('overview')">
+                    <i class="fas fa-th-large"></i>
+                    <span>Overview</span>
+                </a>
+                <a href="#" class="menu-item" onclick="showSection('help-requests')">
+                    <i class="fas fa-hands-helping"></i>
+                    <span>Help Requests</span>
+                </a>
+                <a href="#" class="menu-item" onclick="showSection('item-sharing')">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Item Sharing</span>
+                </a>
+                <a href="#" class="menu-item" onclick="showSection('members')">
+                    <i class="fas fa-users"></i>
+                    <span>Members</span>
+                </a>
+                <a href="#" class="menu-item" onclick="showSection('society')">
+                    <i class="fas fa-building"></i>
+                    <span>Society Info</span>
+                </a>
+                <a href="#" class="menu-item" onclick="showSection('profile')">
+                    <i class="fas fa-user"></i>
+                    <span>My Profile</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Overview Section -->
+            <section id="overview-section" class="content-section active">
+                <div class="section-header">
+                    <h1>Dashboard Overview</h1>
+                    <p>Welcome back! Here's what's happening in your community.</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <i class="fas fa-hands-helping"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalHelps">0</h3>
+                            <p>Help Requests</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalItems">0</h3>
+                            <p>Items Shared</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon orange">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalMembers">0</h3>
+                            <p>Active Members</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon red">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="emergencies">0</h3>
+                            <p>Emergency Alerts</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h2>Quick Actions</h2>
+                    <div class="actions-grid">
+                        <button class="action-btn" onclick="showHelpRequestModal()">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Request Help</span>
+                        </button>
+                        <button class="action-btn" onclick="showItemSharingModal()">
+                            <i class="fas fa-share-alt"></i>
+                            <span>Share Item</span>
+                        </button>
+                        <button class="action-btn" onclick="showEmergencyModal()">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <span>Emergency Alert</span>
+                        </button>
+                        <button class="action-btn" onclick="showSection('members')">
+                            <i class="fas fa-search"></i>
+                            <span>Find Members</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="recent-activity">
+                    <h2>Recent Activity</h2>
+                    <div id="activityList" class="activity-list">
+                        <p class="text-muted">Loading activities...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Help Requests Section -->
+            <section id="help-requests-section" class="content-section">
+                <div class="section-header">
+                    <h1>Help Requests</h1>
+                    <button class="btn btn-primary" onclick="showHelpRequestModal()">
+                        <i class="fas fa-plus"></i> New Request
+                    </button>
+                </div>
+                <div id="helpRequestsList" class="cards-grid">
+                    <p class="text-muted">Loading help requests...</p>
+                </div>
+            </section>
+
+            <!-- Item Sharing Section -->
+            <section id="item-sharing-section" class="content-section">
+                <div class="section-header">
+                    <h1>Item Sharing</h1>
+                    <button class="btn btn-primary" onclick="showItemSharingModal()">
+                        <i class="fas fa-plus"></i> Share Item
+                    </button>
+                </div>
+                <div id="itemsList" class="cards-grid">
+                    <p class="text-muted">Loading shared items...</p>
+                </div>
+            </section>
+
+            <!-- Members Section -->
+            <section id="members-section" class="content-section">
+                <div class="section-header">
+                    <h1>Community Members</h1>
+                    <div class="search-box">
+                        <input type="text" placeholder="Search members..." id="memberSearch">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+                <div id="membersList" class="members-grid">
+                    <p class="text-muted">Loading members...</p>
+                </div>
+            </section>
+
+            <!-- Society Info Section -->
+            <section id="society-section" class="content-section">
+                <div class="section-header">
+                    <h1>Society Information</h1>
+                </div>
+                <div id="societyInfo" class="info-card">
+                    <p class="text-muted">Loading society information...</p>
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section id="profile-section" class="content-section">
+                <div class="section-header">
+                    <h1>My Profile</h1>
+                </div>
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="profile-info" id="profileInfo">
+                            <p class="text-muted">Loading profile...</p>
+                        </div>
+                    </div>
+                    <div class="profile-details" id="profileDetails">
+                        <!-- Profile details will be loaded here -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Help Request Modal -->
+    <div id="helpRequestModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('helpRequestModal')">&times;</span>
+            <h2>Request Help</h2>
+            <p class="modal-subtitle">Apne neighbors se help request karo</p>
+            
+            <form id="helpRequestForm" onsubmit="submitHelpRequest(event)">
+                <div class="form-group">
+                    <label>Help Type</label>
+                    <select id="helpType" required>
+                        <option value="">Select type</option>
+                        <option value="electrician">Electrician</option>
+                        <option value="plumber">Plumber</option>
+                        <option value="carpenter">Carpenter</option>
+                        <option value="medical">Medical Help</option>
+                        <option value="transport">Transport</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="helpDescription" rows="4" required placeholder="Describe your requirement..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Urgency</label>
+                    <select id="helpUrgency" required>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                        <option value="emergency">Emergency</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fas fa-paper-plane"></i> Submit Request
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Item Sharing Modal -->
+    <div id="itemSharingModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('itemSharingModal')">&times;</span>
+            <h2>Share Item</h2>
+            <p class="modal-subtitle">Apna item neighbors ke saath share karo</p>
+            
+            <form id="itemSharingForm" onsubmit="submitItemSharing(event)">
+                <div class="form-group">
+                    <label>Item Name</label>
+                    <input type="text" id="itemName" required placeholder="e.g., Drill Machine">
+                </div>
+                
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="itemCategory" required>
+                        <option value="">Select category</option>
+                        <option value="tools">Tools</option>
+                        <option value="books">Books</option>
+                        <option value="kitchen">Kitchen Items</option>
+                        <option value="sports">Sports Equipment</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="itemDescription" rows="3" placeholder="Item ki details..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Availability</label>
+                    <select id="itemAvailability" required>
+                        <option value="available">Available Now</option>
+                        <option value="in-use">Currently In Use</option>
+                        <option value="not-available">Not Available</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fas fa-share"></i> Share Item
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

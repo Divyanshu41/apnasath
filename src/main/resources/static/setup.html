@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup - CommunityConnect</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .setup-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .setup-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .setup-header h1 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .setup-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-light);
+            font-weight: 600;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+        
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            border-left: 4px solid #28a745;
+        }
+        
+        .society-code {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="setup-container">
+        <div class="setup-header">
+            <h1>🏢 Initial Setup</h1>
+            <p>Setup your society and create the first admin account</p>
+        </div>
+        
+        <div class="setup-tabs">
+            <button class="tab-btn active" onclick="switchTab('society')">
+                Step 1: Register Society
+            </button>
+            <button class="tab-btn" onclick="switchTab('admin')">
+                Step 2: Create Admin
+            </button>
+        </div>
+        
+        <!-- Society Registration Tab -->
+        <div id="society-tab" class="tab-content active">
+            <div class="info-box">
+                <strong>ℹ️ Important:</strong> Sabse pehle apni society register karein. Society registration ke baad aapko ek unique code milega jo user registration ke liye use hoga.
+            </div>
+            
+            <form id="societyForm">
+                <div class="form-group">
+                    <label for="societyName">Society Name *</label>
+                    <input type="text" id="societyName" required placeholder="e.g., Green Valley Apartments">
+                </div>
+                
+                <div class="form-group">
+                    <label for="societyAddress">Address *</label>
+                    <textarea id="societyAddress" rows="3" required placeholder="Full address of the society"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="societyCity">City *</label>
+                    <input type="text" id="societyCity" required placeholder="e.g., Mumbai">
+                </div>
+                
+                <div class="form-group">
+                    <label for="societyState">State *</label>
+                    <input type="text" id="societyState" required placeholder="e.g., Maharashtra">
+                </div>
+                
+                <div class="form-group">
+                    <label for="societyPincode">Pincode *</label>
+                    <input type="text" id="societyPincode" required pattern="\d{6}" placeholder="e.g., 400001">
+                </div>
+                
+                <div class="form-group">
+                    <label for="totalFlats">Total Flats *</label>
+                    <input type="number" id="totalFlats" required min="1" placeholder="e.g., 50">
+                </div>
+                
+                <div class="form-group">
+                    <label for="contactEmail">Contact Email *</label>
+                    <input type="email" id="contactEmail" required placeholder="society@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="contactPhone">Contact Phone *</label>
+                    <input type="tel" id="contactPhone" required pattern="[6-9]\d{9}" placeholder="10-digit phone number">
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">
+                    Register Society
+                </button>
+            </form>
+            
+            <div id="societySuccess" style="display: none;">
+                <div class="success-message">
+                    <h3>✅ Society Registered Successfully!</h3>
+                    <p>Your society registration code is:</p>
+                    <div class="society-code" id="registrationCode"></div>
+                    <p><strong>Important:</strong> Save this code! Users will need this code to register in your society.</p>
+                    <button class="btn btn-primary" onclick="switchTab('admin')">
+                        Next: Create Admin Account →
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Admin Registration Tab -->
+        <div id="admin-tab" class="tab-content">
+            <div class="info-box">
+                <strong>ℹ️ Note:</strong> Apna admin account banayein. Is account se aap members ko verify kar sakte hain aur society manage kar sakte hain.
+            </div>
+            
+            <form id="adminForm">
+                <div class="form-group">
+                    <label for="adminName">Full Name *</label>
+                    <input type="text" id="adminName" required placeholder="Your full name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="adminEmail">Email *</label>
+                    <input type="email" id="adminEmail" required placeholder="admin@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="adminPhone">Phone Number *</label>
+                    <input type="tel" id="adminPhone" required pattern="[6-9]\d{9}" placeholder="10-digit phone number">
+                </div>
+                
+                <div class="form-group">
+                    <label for="adminFlat">Flat Number *</label>
+                    <input type="text" id="adminFlat" required placeholder="e.g., A-101">
+                </div>
+                
+                <div class="form-group">
+                    <label for="adminSocietyCode">Society Registration Code *</label>
+                    <input type="text" id="adminSocietyCode" required placeholder="Enter the code from Step 1">
+                    <small>यह code आपको Step 1 में मिला था</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="adminPassword">Password *</label>
+                    <input type="password" id="adminPassword" required minlength="6" placeholder="Minimum 6 characters">
+                </div>
+                
+                <div class="form-group">
+                    <label for="adminConfirmPassword">Confirm Password *</label>
+                    <input type="password" id="adminConfirmPassword" required placeholder="Re-enter password">
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">
+                    Create Admin Account
+                </button>
+            </form>
+            
+            <div id="adminSuccess" style="display: none;">
+                <div class="success-message">
+                    <h3>✅ Admin Account Created Successfully!</h3>
+                    <p>Setup complete! You can now login with your admin credentials.</p>
+                    <button class="btn btn-primary" onclick="window.location.href='index.html'">
+                        Go to Homepage →
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_BASE_URL = 'http://localhost:8080/api';
+        
+        function switchTab(tab) {
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tab + '-tab').classList.add('active');
+        }
+        
+        // Society Registration
+        document.getElementById('societyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('societyName').value,
+                address: document.getElementById('societyAddress').value,
+                city: document.getElementById('societyCity').value,
+                state: document.getElementById('societyState').value,
+                pincode: document.getElementById('societyPincode').value,
+                totalFlats: parseInt(document.getElementById('totalFlats').value),
+                contactEmail: document.getElementById('contactEmail').value,
+                contactPhone: document.getElementById('contactPhone').value
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/society/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('registrationCode').textContent = data.registrationCode;
+                    document.getElementById('societyForm').style.display = 'none';
+                    document.getElementById('societySuccess').style.display = 'block';
+                    
+                    // Auto-fill society code in admin form
+                    document.getElementById('adminSocietyCode').value = data.registrationCode;
+                } else {
+                    const error = await response.json();
+                    alert('Error: ' + (error.message || 'Failed to register society'));
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+        
+        // Admin Registration
+        document.getElementById('adminForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const password = document.getElementById('adminPassword').value;
+            const confirmPassword = document.getElementById('adminConfirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            const formData = {
+                name: document.getElementById('adminName').value,
+                email: document.getElementById('adminEmail').value,
+                phone: document.getElementById('adminPhone').value,
+                flatNumber: document.getElementById('adminFlat').value,
+                societyCode: document.getElementById('adminSocietyCode').value,
+                password: password
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (response.ok) {
+                    document.getElementById('adminForm').style.display = 'none';
+                    document.getElementById('adminSuccess').style.display = 'block';
+                } else {
+                    const error = await response.json();
+                    alert('Error: ' + (error.message || 'Failed to create admin account'));
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
