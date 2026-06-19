@@ -18,7 +18,7 @@ services:
 
   app:
 
-    build: .
+    image: divyanshu41/apnasath:latest
 
     container_name: newapnasath-app
 
